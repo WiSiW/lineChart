@@ -1,18 +1,18 @@
 /**
- * »æÖÆÕÛÏßÍ¼-²å¼ş°æ-¶àÏßÌõ
+ * ç»˜åˆ¶æŠ˜çº¿å›¾-æ’ä»¶ç‰ˆ-å¤šçº¿æ¡
  */
 function createLineChat ( canvasId , axisPadding , interval , lineColor , linesData ) {
     /**
-     * ¿ªÊ¼»æÖÆÕÛÏßÍ¼
+     * å¼€å§‹ç»˜åˆ¶æŠ˜çº¿å›¾
      */
     let canvas = document.getElementById(canvasId);
-    // 1.´´½¨»­²¼¶ÔÏó
+    // 1.åˆ›å»ºç”»å¸ƒå¯¹è±¡
     let c = canvas.getContext("2d");
-    // 2.¶¨Òå×ø±êÖáÆğÊ¼µã,Ô­µã,½áÊøµãµÄ×ø±êÖµ
-    // 1)»ñÈ¡»­²¼µÄ¿í¸ß
+    // 2.å®šä¹‰åæ ‡è½´èµ·å§‹ç‚¹,åŸç‚¹,ç»“æŸç‚¹çš„åæ ‡å€¼
+    // 1)è·å–ç”»å¸ƒçš„å®½é«˜
     const cWidth = canvas.width;
     const cHeight = canvas.height;
-    // 2)¶¨Òå×ø±êÖµ
+    // 2)å®šä¹‰åæ ‡å€¼
     var yStart = {
         x : axisPadding.paddingLeft,
         y : axisPadding.padding
@@ -25,96 +25,104 @@ function createLineChat ( canvasId , axisPadding , interval , lineColor , linesD
         x : cWidth - axisPadding.padding,
         y : cHeight - axisPadding.paddingBottom
     };
-    // 3.»æÖÆ×ø±êÖá
-    // 1)»æÖÆ×ø±êÖáÏßÌõ
+    // 3.ç»˜åˆ¶åæ ‡è½´
+    // 1)ç»˜åˆ¶åæ ‡è½´çº¿æ¡
     c.beginPath();
     c.moveTo(yStart.x , yStart.y);
     c.lineTo(origin.x , origin.y);
     c.lineTo(xEnd.x , xEnd.y);
-    c.stroke();// ¿ªÊ¼»æÖÆ
-    // 2)»æÖÆ×ø±êÖá¼ıÍ· ( 5*10 )
-    // 3)»æÖÆYÖá¼ıÍ·
+    c.stroke();// å¼€å§‹ç»˜åˆ¶
+    // 2)ç»˜åˆ¶åæ ‡è½´ç®­å¤´ ( 5*10 )
+    // 3)ç»˜åˆ¶Yè½´ç®­å¤´
     c.beginPath();
     c.moveTo(yStart.x - 5 , yStart.y + 10);
     c.lineTo(yStart.x , yStart.y);
     c.lineTo(yStart.x + 5 , yStart.y + 10);
-    c.stroke();// ¿ªÊ¼»æÖÆ
+    c.stroke();// å¼€å§‹ç»˜åˆ¶
 
-    // 4)»æÖÆXÖá¼ıÍ·
+    // 4)ç»˜åˆ¶Xè½´ç®­å¤´
     c.beginPath();
     c.moveTo(xEnd.x - 10 , xEnd.y - 5);
     c.lineTo(xEnd.x , xEnd.y);
     c.lineTo(xEnd.x - 10 , xEnd.y + 5);
-    c.stroke();// ¿ªÊ¼»æÖÆ
-    // 5)±ê×¢×ø±êÖá¿Ì¶È
-    // 1:ÉèÖÃ¿Ì¶È×ÖÌå
-    c.font = "14px Î¢ÈíÑÅºÚ";
-    // 2:»æÖÆXÖá¿Ì¶È
-    // ¼ÆËãXÖá¿Ì¶ÈÊıÓë¼ä¾à
-    // »ñÈ¡Ã¿ÌõÕÛÏßxµÄ×î´óÖµ,²¢±£´æÔÚÊı×éxSortÖĞ
+    c.stroke();// å¼€å§‹ç»˜åˆ¶
+    // 5)æ ‡æ³¨åæ ‡è½´åˆ»åº¦
+    // 1:è®¾ç½®åˆ»åº¦å­—ä½“
+    c.font = "14px å¾®è½¯é›…é»‘";
+    // 2:ç»˜åˆ¶Xè½´åˆ»åº¦
+    // è®¡ç®—Xè½´åˆ»åº¦æ•°ä¸é—´è·
+    // è·å–æ¯æ¡æŠ˜çº¿xçš„æœ€å¤§å€¼,å¹¶ä¿å­˜åœ¨æ•°ç»„xSortä¸­
     let xSort = [];
     for(let i = 0 ; i < linesData.length ; i++){
         linesData[i].sort(function (a,b) {return a.x - b.x;});
         xSort.push(linesData[i][linesData[i].length - 1])
     }
-    // ¸ù¾İÊı×éÖĞµÄx¶ÔÊı×é½øĞĞÅÅĞò,ÒÔ±ã»ñÈ¡xµÄ×î´óÖµ
+    // æ ¹æ®æ•°ç»„ä¸­çš„xå¯¹æ•°ç»„è¿›è¡Œæ’åº,ä»¥ä¾¿è·å–xçš„æœ€å¤§å€¼
     xSort.sort(function (a,b) {return a.x - b.x;});
     let xCount = Math.ceil(xSort[xSort.length - 1].x / interval.xInterval);
-    let xLen = (xEnd.x - origin.x) / xCount;
-    console.log((xEnd.x - origin.x))
-    console.log(xLen)
-    console.log(origin)
-    // ÉèÖÃ¶¥¶Ë¶ÔÆë
+    let xLen = (xEnd.x - origin.x -20) / xCount;
+    // è®¾ç½®é¡¶ç«¯å¯¹é½
     c.textBaseline = "top";
     c.textAlign = "center";
-    // »æÖÆXÖá×ø±ê
+    // ç»˜åˆ¶Xè½´åæ ‡
     let axisX = origin.x + xLen,
         xVal = interval.xInterval;
     for(let i = 1 ; i < xCount+1 ; i++){
-        console.log(axisX,origin.y+4)
-        // »æÖÆ¿Ì¶È(Ô­µãÓÒ²à¾àÔ­µã×î½üµÄµÚÒ»¸ö¿ªÊ¼)
+        // ç»˜åˆ¶åˆ»åº¦(åŸç‚¹å³ä¾§è·åŸç‚¹æœ€è¿‘çš„ç¬¬ä¸€ä¸ªå¼€å§‹)
         c.fillText(xVal , axisX , origin.y+4);
-        // »æÖÆÏÂÒ»¸ö¿Ì¶ÈÊ±,¸Ä±ä×ø±êXÖµºÍ×ø±êÖµ
+
+        // ç»˜åˆ¶èƒŒæ™¯æ–¹æ ¼ - ç«–çº¿
+        c.beginPath();
+        c.moveTo(axisX , origin.y);
+        c.lineTo(axisX , yStart.y+20);
+        c.stroke();
+        // ç»˜åˆ¶ä¸‹ä¸€ä¸ªåˆ»åº¦æ—¶,æ”¹å˜åæ ‡Xå€¼å’Œåæ ‡å€¼
         axisX += xLen;
         xVal += interval.xInterval;
     }
 
-    // 3:»æÖÆYÖá¿Ì¶È
-    // ¼ÆËãYÖá¿Ì¶ÈÊıÓë¼ä¾à
-    // »ñÈ¡Ã¿ÌõÕÛÏßyµÄ×î´óÖµ,²¢±£´æÔÚÊı×éySortÖĞ
+    // 3:ç»˜åˆ¶Yè½´åˆ»åº¦
+    // è®¡ç®—Yè½´åˆ»åº¦æ•°ä¸é—´è·
+    // è·å–æ¯æ¡æŠ˜çº¿yçš„æœ€å¤§å€¼,å¹¶ä¿å­˜åœ¨æ•°ç»„ySortä¸­
     let ySort = [];
     for(let i = 0 ; i < linesData.length ; i++){
         linesData[i].sort(function (a,b) {return a.y - b.y;});
         ySort.push(linesData[i][linesData[i].length - 1])
     }
-    // ¸ù¾İÊı×éÖĞµÄy¶ÔÊı×é½øĞĞÅÅĞò,ÒÔ±ã»ñÈ¡yµÄ×î´óÖµ
+    // æ ¹æ®æ•°ç»„ä¸­çš„yå¯¹æ•°ç»„è¿›è¡Œæ’åº,ä»¥ä¾¿è·å–yçš„æœ€å¤§å€¼
     ySort.sort(function (a,b) {return a.y - b.y;});
     let yCount = Math.ceil(ySort[ySort.length - 1].y / interval.yInterval);
-    let yLen = (origin.y -yStart.y) / yCount;
-    // ÉèÖÃÓÒ¶ÔÆë
+    let yLen = (origin.y -yStart.y - 20) / yCount;
+    // è®¾ç½®å³å¯¹é½
     c.textAlign = "right";
-    // »æÖÆYÖá×ø±ê
+    // ç»˜åˆ¶Yè½´åæ ‡
     let axisY = origin.y - yLen,
         yVal = interval.yInterval;
     for(let i = 1 ; i < yCount+1 ; i++){
-        // »æÖÆ¿Ì¶È(Ô­µãÉÏ·½¾àÔ­µã×î½üµÄµÚÒ»¸ö¿ªÊ¼)
+        // ç»˜åˆ¶åˆ»åº¦(åŸç‚¹ä¸Šæ–¹è·åŸç‚¹æœ€è¿‘çš„ç¬¬ä¸€ä¸ªå¼€å§‹)
         c.fillText(yVal , origin.x-4 , axisY);
-        // »æÖÆÏÂÒ»¸ö¿Ì¶ÈÊ±,¸Ä±ä×ø±êYÖµºÍ×ø±êÖµ
+
+        // ç»˜åˆ¶èƒŒæ™¯æ–¹æ ¼ - æ¨ªçº¿
+        c.beginPath();
+        c.moveTo(origin.x , axisY);
+        c.lineTo(xEnd.x-20 , axisY);
+        c.stroke();
+        // ç»˜åˆ¶ä¸‹ä¸€ä¸ªåˆ»åº¦æ—¶,æ”¹å˜åæ ‡Yå€¼å’Œåæ ‡å€¼
         axisY -= yLen;
         yVal += interval.yInterval;
     }
 
-    // 3:»æÖÆÔ­µã¿Ì¶È
+    // 3:ç»˜åˆ¶åŸç‚¹åˆ»åº¦
     c.fillText("0,0" , origin.x , origin.y);
-    //c.closePath()// ½áÊø»æÖÆ
-    //c.stroke(); // ¿ªÊ¼»æÖÆ
-    // 4.»æÖÆÕÛÏß
+    //c.closePath()// ç»“æŸç»˜åˆ¶
+    //c.stroke(); // å¼€å§‹ç»˜åˆ¶
+    // 4.ç»˜åˆ¶æŠ˜çº¿
     drawLines( c , origin , interval , linesData , {xCount:xCount,xLen:xLen,yCount:yCount,yLen:yLen} , lineColor);
 
 }
 
 function drawLines ( c ,origin , interval , linesData ,axisInfo, lineColor) {
-    // 3)»æÖÆÕÛÏß
+    // 3)ç»˜åˆ¶æŠ˜çº¿
     for(let i = 0 ; i < linesData.length ; i++){
         drawLine( c ,origin , interval , linesData[i] ,axisInfo , lineColor);
     }
@@ -122,38 +130,38 @@ function drawLines ( c ,origin , interval , linesData ,axisInfo, lineColor) {
 
 
 function drawLine ( c ,origin , interval , lineData ,axisInfo , lineColor) {
-    // 2)ÉèÖÃÕÛÏßÊôĞÔ
-    c.textAlign = "left"; // ×ó¶ÔÆë
-    c.textBaseline = "bottom"; // ¿¿µ×
-    c.strokeStyle = lineColor; // ÕÛÏßÑÕÉ«
+    // 2)è®¾ç½®æŠ˜çº¿å±æ€§
+    c.textAlign = "left"; // å·¦å¯¹é½
+    c.textBaseline = "bottom"; // é åº•
+    c.strokeStyle = lineColor; // æŠ˜çº¿é¢œè‰²
     c.fillStyle = "black";
     c.beginPath();
-    // 1)¸ù¾İÊı×éÖĞµÄx¶ÔÊı×é½øĞĞÅÅĞò
+    // 1)æ ¹æ®æ•°ç»„ä¸­çš„xå¯¹æ•°ç»„è¿›è¡Œæ’åº
     lineData.sort(function (a,b) {return a.x - b.x});
     for(let i = 0 ; i < lineData.length ; i++){
-        // ÕÛÏßÏà¶ÔÓÚ»­²¼µÄ×ø±êÖµ
+        // æŠ˜çº¿ç›¸å¯¹äºç”»å¸ƒçš„åæ ‡å€¼
         let pointX = origin.x + lineData[i].x / interval.xInterval * axisInfo.xLen;
         let pointY = origin.y - lineData[i].y / interval.yInterval * axisInfo.yLen;
-        // »æÖÆÕÛÏß
+        // ç»˜åˆ¶æŠ˜çº¿
         if( i === 0 ){
             c.moveTo(pointX , pointY);
         }else{
             c.lineTo(pointX , pointY);
         }
-        // ÉèÖÃ¿Ì¶ÈÖµ
+        // è®¾ç½®åˆ»åº¦å€¼
         c.fillText(lineData[i].value , pointX , pointY);
         if( i === (lineData.length - 1)){
             c.stroke();
-            // ÔÚ×ªÕÛ´¦»­ÉÏ¿ÕĞÄÔ²
+            // åœ¨è½¬æŠ˜å¤„ç”»ä¸Šç©ºå¿ƒåœ†
             drawCircles(c,origin,interval,axisInfo,lineData,4);
         }
     }
 }
 function drawCircles ( c,origin,interval,axisInfo,lineData,radious) {
-    // 1)¸ù¾İÊı×éÖĞµÄx¶ÔÊı×é½øĞĞÅÅĞò
+    // 1)æ ¹æ®æ•°ç»„ä¸­çš„xå¯¹æ•°ç»„è¿›è¡Œæ’åº
     //lineData.sort(function (a,b) {return a.x - b.x});
     for(let i = 0 ; i < lineData.length ; i++){
-        // ÕÛÏßÏà¶ÔÓÚ»­²¼µÄ×ø±êÖµ
+        // æŠ˜çº¿ç›¸å¯¹äºç”»å¸ƒçš„åæ ‡å€¼
         let pointX = origin.x + lineData[i].x / interval.xInterval * axisInfo.xLen;
         let pointY = origin.y - lineData[i].y / interval.yInterval * axisInfo.yLen;
         drawCircle (c , pointX , pointY , radious)
@@ -162,7 +170,7 @@ function drawCircles ( c,origin,interval,axisInfo,lineData,radious) {
 
 function drawCircle (c , x , y , radious) {
     c.beginPath();
-    c.strokeStyle = "red"; // ÕÛÏßÑÕÉ«
+    c.strokeStyle = "red"; // æŠ˜çº¿é¢œè‰²
     c.fillStyle = "#f0f0f0";
     c.arc(x,y,radious,Math.PI*2,0,true);
     c.closePath();
