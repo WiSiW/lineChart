@@ -61,14 +61,19 @@ function createLineChat ( canvasId , axisPadding , interval , lineColor , linesD
     xSort.sort(function (a,b) {return a.x - b.x;});
     let xCount = Math.ceil(xSort[xSort.length - 1].x / interval.xInterval);
     let xLen = (xEnd.x - origin.x) / xCount;
+    console.log((xEnd.x - origin.x))
+    console.log(xLen)
+    console.log(origin)
     // 设置顶端对齐
     c.textBaseline = "top";
+    c.textAlign = "center";
     // 绘制X轴坐标
     let axisX = origin.x + xLen,
-        xVal = 0;
-    for(let i = 0 ; i < xCount ; i++){
+        xVal = interval.xInterval;
+    for(let i = 1 ; i < xCount+1 ; i++){
+        console.log(axisX,origin.y+4)
         // 绘制刻度(原点右侧距原点最近的第一个开始)
-        c.fillText(xVal , axisX , origin.y);
+        c.fillText(xVal , axisX , origin.y+4);
         // 绘制下一个刻度时,改变坐标X值和坐标值
         axisX += xLen;
         xVal += interval.xInterval;
@@ -90,10 +95,10 @@ function createLineChat ( canvasId , axisPadding , interval , lineColor , linesD
     c.textAlign = "right";
     // 绘制Y轴坐标
     let axisY = origin.y - yLen,
-        yVal = 0;
-    for(let i = 0 ; i < yCount ; i++){
+        yVal = interval.yInterval;
+    for(let i = 1 ; i < yCount+1 ; i++){
         // 绘制刻度(原点上方距原点最近的第一个开始)
-        c.fillText(yVal , origin.x , axisY);
+        c.fillText(yVal , origin.x-4 , axisY);
         // 绘制下一个刻度时,改变坐标Y值和坐标值
         axisY -= yLen;
         yVal += interval.yInterval;
