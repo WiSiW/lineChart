@@ -1,18 +1,18 @@
 /**
- * ç»˜åˆ¶æŠ˜çº¿å›¾-æ’ä»¶ç‰ˆ-å¤šçº¿æ¡
+ * »æÖÆÕÛÏßÍ¼-²å¼ş°æ-¶àÏßÌõ
  */
 function createLineChat ( canvasId , axisPadding , interval , lineColor , linesData ) {
     /**
-     * å¼€å§‹ç»˜åˆ¶æŠ˜çº¿å›¾
+     * ¿ªÊ¼»æÖÆÕÛÏßÍ¼
      */
     let canvas = document.getElementById(canvasId);
-    // 1.åˆ›å»ºç”»å¸ƒå¯¹è±¡
+    // 1.´´½¨»­²¼¶ÔÏó
     let c = canvas.getContext("2d");
-    // 2.å®šä¹‰åæ ‡è½´èµ·å§‹ç‚¹,åŸç‚¹,ç»“æŸç‚¹çš„åæ ‡å€¼
-    // 1)è·å–ç”»å¸ƒçš„å®½é«˜
+    // 2.¶¨Òå×ø±êÖáÆğÊ¼µã,Ô­µã,½áÊøµãµÄ×ø±êÖµ
+    // 1)»ñÈ¡»­²¼µÄ¿í¸ß
     const cWidth = canvas.width;
     const cHeight = canvas.height;
-    // 2)å®šä¹‰åæ ‡å€¼
+    // 2)¶¨Òå×ø±êÖµ
     var yStart = {
         x : axisPadding.paddingLeft,
         y : axisPadding.padding
@@ -25,114 +25,142 @@ function createLineChat ( canvasId , axisPadding , interval , lineColor , linesD
         x : cWidth - axisPadding.padding,
         y : cHeight - axisPadding.paddingBottom
     };
-    // 3.ç»˜åˆ¶åæ ‡è½´
-    // 1)ç»˜åˆ¶åæ ‡è½´çº¿æ¡
+    // 3.»æÖÆ×ø±êÖá
+    // 1)»æÖÆ×ø±êÖáÏßÌõ
     c.beginPath();
     c.moveTo(yStart.x , yStart.y);
     c.lineTo(origin.x , origin.y);
     c.lineTo(xEnd.x , xEnd.y);
-    c.stroke();// ç»“æŸç»˜åˆ¶
-    // 2)ç»˜åˆ¶åæ ‡è½´ç®­å¤´ ( 5*10 )
-    // 3)ç»˜åˆ¶Yè½´ç®­å¤´
+    c.stroke();// ¿ªÊ¼»æÖÆ
+    // 2)»æÖÆ×ø±êÖá¼ıÍ· ( 5*10 )
+    // 3)»æÖÆYÖá¼ıÍ·
     c.beginPath();
     c.moveTo(yStart.x - 5 , yStart.y + 10);
     c.lineTo(yStart.x , yStart.y);
     c.lineTo(yStart.x + 5 , yStart.y + 10);
-    c.stroke();// ç»“æŸç»˜åˆ¶
+    c.stroke();// ¿ªÊ¼»æÖÆ
 
-    // 4)ç»˜åˆ¶Xè½´ç®­å¤´
+    // 4)»æÖÆXÖá¼ıÍ·
     c.beginPath();
     c.moveTo(xEnd.x - 10 , xEnd.y - 5);
     c.lineTo(xEnd.x , xEnd.y);
     c.lineTo(xEnd.x - 10 , xEnd.y + 5);
-    c.stroke();// ç»“æŸç»˜åˆ¶
-    // 5)æ ‡æ³¨åæ ‡è½´åˆ»åº¦
-    // 1:è®¾ç½®åˆ»åº¦å­—ä½“
-    c.font = "14px å¾®è½¯é›…é»‘";
-    // 2:ç»˜åˆ¶Xè½´åˆ»åº¦
-    // è®¡ç®—Xè½´åˆ»åº¦æ•°ä¸é—´è·
-    // è·å–æ¯æ¡æŠ˜çº¿xçš„æœ€å¤§å€¼,å¹¶ä¿å­˜åœ¨æ•°ç»„xSortä¸­
+    c.stroke();// ¿ªÊ¼»æÖÆ
+    // 5)±ê×¢×ø±êÖá¿Ì¶È
+    // 1:ÉèÖÃ¿Ì¶È×ÖÌå
+    c.font = "14px Î¢ÈíÑÅºÚ";
+    // 2:»æÖÆXÖá¿Ì¶È
+    // ¼ÆËãXÖá¿Ì¶ÈÊıÓë¼ä¾à
+    // »ñÈ¡Ã¿ÌõÕÛÏßxµÄ×î´óÖµ,²¢±£´æÔÚÊı×éxSortÖĞ
     let xSort = [];
     for(let i = 0 ; i < linesData.length ; i++){
         linesData[i].sort(function (a,b) {return a.x - b.x;});
         xSort.push(linesData[i][linesData[i].length - 1])
     }
-    // æ ¹æ®æ•°ç»„ä¸­çš„xå¯¹æ•°ç»„è¿›è¡Œæ’åº,ä»¥ä¾¿è·å–æœ€å¤§çš„x
+    // ¸ù¾İÊı×éÖĞµÄx¶ÔÊı×é½øĞĞÅÅĞò,ÒÔ±ã»ñÈ¡xµÄ×î´óÖµ
     xSort.sort(function (a,b) {return a.x - b.x;});
     let xCount = Math.ceil(xSort[xSort.length - 1].x / interval.xInterval);
     let xLen = (xEnd.x - origin.x) / xCount;
-    // è®¾ç½®é¡¶ç«¯å¯¹é½
+    // ÉèÖÃ¶¥¶Ë¶ÔÆë
     c.textBaseline = "top";
-    // ç»˜åˆ¶Xè½´åæ ‡
+    // »æÖÆXÖá×ø±ê
     let axisX = origin.x + xLen,
         xVal = 0;
     for(let i = 0 ; i < xCount ; i++){
-        // ç»˜åˆ¶åˆ»åº¦(åŸç‚¹å³ä¾§è·åŸç‚¹æœ€è¿‘çš„ç¬¬ä¸€ä¸ªå¼€å§‹)
+        // »æÖÆ¿Ì¶È(Ô­µãÓÒ²à¾àÔ­µã×î½üµÄµÚÒ»¸ö¿ªÊ¼)
         c.fillText(xVal , axisX , origin.y);
-        // ç»˜åˆ¶ä¸‹ä¸€ä¸ªåˆ»åº¦æ—¶,æ”¹å˜åæ ‡Xå€¼å’Œåæ ‡å€¼
+        // »æÖÆÏÂÒ»¸ö¿Ì¶ÈÊ±,¸Ä±ä×ø±êXÖµºÍ×ø±êÖµ
         axisX += xLen;
-        xVal += interval.xInterval
+        xVal += interval.xInterval;
     }
 
-    // 3:ç»˜åˆ¶Yè½´åˆ»åº¦
-    // è®¡ç®—Yè½´åˆ»åº¦æ•°ä¸é—´è·
-    // è·å–æ¯æ¡æŠ˜çº¿yçš„æœ€å¤§æ•°å€¼,å¹¶ä¿å­˜åœ¨æ•°ç»„ySortä¸­
+    // 3:»æÖÆYÖá¿Ì¶È
+    // ¼ÆËãYÖá¿Ì¶ÈÊıÓë¼ä¾à
+    // »ñÈ¡Ã¿ÌõÕÛÏßyµÄ×î´óÖµ,²¢±£´æÔÚÊı×éySortÖĞ
     let ySort = [];
     for(let i = 0 ; i < linesData.length ; i++){
         linesData[i].sort(function (a,b) {return a.y - b.y;});
         ySort.push(linesData[i][linesData[i].length - 1])
     }
-    // æ ¹æ®æ•°ç»„ä¸­çš„yå¯¹æ•°ç»„è¿›è¡Œæ’åº,ä»¥ä¾¿è·å–æœ€å¤§çš„y
+    // ¸ù¾İÊı×éÖĞµÄy¶ÔÊı×é½øĞĞÅÅĞò,ÒÔ±ã»ñÈ¡yµÄ×î´óÖµ
     ySort.sort(function (a,b) {return a.y - b.y;});
     let yCount = Math.ceil(ySort[ySort.length - 1].y / interval.yInterval);
     let yLen = (origin.y -yStart.y) / yCount;
-    // è®¾ç½®å³å¯¹é½
+    // ÉèÖÃÓÒ¶ÔÆë
     c.textAlign = "right";
-    // ç»˜åˆ¶Yè½´åæ ‡
+    // »æÖÆYÖá×ø±ê
     let axisY = origin.y - yLen,
         yVal = 0;
     for(let i = 0 ; i < yCount ; i++){
-        // ç»˜åˆ¶åˆ»åº¦(åŸç‚¹ä¸Šæ–¹è·åŸç‚¹æœ€è¿‘çš„ç¬¬ä¸€ä¸ªå¼€å§‹)
+        // »æÖÆ¿Ì¶È(Ô­µãÉÏ·½¾àÔ­µã×î½üµÄµÚÒ»¸ö¿ªÊ¼)
         c.fillText(yVal , origin.x , axisY);
-        // ç»˜åˆ¶ä¸‹ä¸€ä¸ªåˆ»åº¦æ—¶,æ”¹å˜åæ ‡Yå€¼å’Œåæ ‡å€¼
+        // »æÖÆÏÂÒ»¸ö¿Ì¶ÈÊ±,¸Ä±ä×ø±êYÖµºÍ×ø±êÖµ
         axisY -= yLen;
         yVal += interval.yInterval;
     }
 
-    // 3:ç»˜åˆ¶åŸç‚¹åˆ»åº¦
+    // 3:»æÖÆÔ­µã¿Ì¶È
     c.fillText("0,0" , origin.x , origin.y);
-    c.stroke(); // ç»“æŸç»˜åˆ¶
-    // 4.ç»˜åˆ¶æŠ˜çº¿
+    //c.closePath()// ½áÊø»æÖÆ
+    //c.stroke(); // ¿ªÊ¼»æÖÆ
+    // 4.»æÖÆÕÛÏß
     drawLines( c , origin , interval , linesData , {xCount:xCount,xLen:xLen,yCount:yCount,yLen:yLen} , lineColor);
+
 }
-// ç»˜åˆ¶å¤šæ¡æŠ˜çº¿
-function drawLines ( c ,origin , interval , linesData ,axisInfo) {
-    // å¯¹æ•°ç»„è¿›è¡Œè½®è¯¢
+
+function drawLines ( c ,origin , interval , linesData ,axisInfo, lineColor) {
+    // 3)»æÖÆÕÛÏß
     for(let i = 0 ; i < linesData.length ; i++){
-        // ç»˜åˆ¶å•æ¡æŠ˜çº¿
-        drawLine( c ,origin , interval , linesData[i] ,axisInfo)
+        drawLine( c ,origin , interval , linesData[i] ,axisInfo , lineColor);
     }
 }
-// ç»˜åˆ¶å•æ¡æŠ˜çº¿
+
+
 function drawLine ( c ,origin , interval , lineData ,axisInfo , lineColor) {
-    // 1)æ ¹æ®æ•°ç»„ä¸­çš„xå¯¹æ•°ç»„è¿›è¡Œæ’åº
+    // 2)ÉèÖÃÕÛÏßÊôĞÔ
+    c.textAlign = "left"; // ×ó¶ÔÆë
+    c.textBaseline = "bottom"; // ¿¿µ×
+    c.strokeStyle = lineColor; // ÕÛÏßÑÕÉ«
+    c.fillStyle = "black";
+    c.beginPath();
+    // 1)¸ù¾İÊı×éÖĞµÄx¶ÔÊı×é½øĞĞÅÅĞò
     lineData.sort(function (a,b) {return a.x - b.x});
-    // 2)è®¾ç½®æŠ˜çº¿å±æ€§
-    c.textAlign = "left"; // å·¦å¯¹é½
-    c.textBaseline = "bottom"; // é åº•
-    c.strokeStyle = lineColor; // æŠ˜çº¿é¢œè‰²
     for(let i = 0 ; i < lineData.length ; i++){
-        // æŠ˜çº¿ç›¸å¯¹äºç”»å¸ƒçš„åæ ‡å€¼
+        // ÕÛÏßÏà¶ÔÓÚ»­²¼µÄ×ø±êÖµ
         let pointX = origin.x + lineData[i].x / interval.xInterval * axisInfo.xLen;
         let pointY = origin.y - lineData[i].y / interval.yInterval * axisInfo.yLen;
-        // ç»˜åˆ¶æŠ˜çº¿
+        // »æÖÆÕÛÏß
         if( i === 0 ){
             c.moveTo(pointX , pointY);
         }else{
             c.lineTo(pointX , pointY);
         }
-        // è®¾ç½®åˆ»åº¦å€¼
+        // ÉèÖÃ¿Ì¶ÈÖµ
         c.fillText(lineData[i].value , pointX , pointY);
+        if( i === (lineData.length - 1)){
+            c.stroke();
+            // ÔÚ×ªÕÛ´¦»­ÉÏ¿ÕĞÄÔ²
+            drawCircles(c,origin,interval,axisInfo,lineData,4);
+        }
     }
-    c.stroke(); // ç»“æŸç»˜åˆ¶
+}
+function drawCircles ( c,origin,interval,axisInfo,lineData,radious) {
+    // 1)¸ù¾İÊı×éÖĞµÄx¶ÔÊı×é½øĞĞÅÅĞò
+    //lineData.sort(function (a,b) {return a.x - b.x});
+    for(let i = 0 ; i < lineData.length ; i++){
+        // ÕÛÏßÏà¶ÔÓÚ»­²¼µÄ×ø±êÖµ
+        let pointX = origin.x + lineData[i].x / interval.xInterval * axisInfo.xLen;
+        let pointY = origin.y - lineData[i].y / interval.yInterval * axisInfo.yLen;
+        drawCircle (c , pointX , pointY , radious)
+    }
+}
+
+function drawCircle (c , x , y , radious) {
+    c.beginPath();
+    c.strokeStyle = "red"; // ÕÛÏßÑÕÉ«
+    c.fillStyle = "#f0f0f0";
+    c.arc(x,y,radious,Math.PI*2,0,true);
+    c.closePath();
+    c.fill();
+    c.stroke();
 }
