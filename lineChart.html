@@ -5,176 +5,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>折线图</title>
 </head>
-
+<script src="lineChart.js"></script>
 <body>
 
-<br/>
-    <textarea id="ttJsonStr"  rows="5" cols="100">[{
-        "x": "12",
-        "y": "13",
-        "value": "315"
-    },
-    {
-        "x": "31",
-        "y": "41",
-        "value": "6498"
-    },
-    {
-        "x": "78",
-        "y": "13",
-        "value": "156"
-    },
-    {
-        "x": "23",
-        "y": "30",
-        "value": "123"
-    },
-    {
-        "x": "1",
-        "y": "34",
-        "value": "331"
-    },
-    {
-        "x": "50",
-        "y": "3",
-        "value": "123"
-    },
-    {
-        "x": "13",
-        "y": "20",
-        "value": "85678"
-    }]</textarea>
 <button type="button" id="btnDrawChart" onclick="drawChart()">click</button><br/>
 <canvas id="myCanvas" width="500" height="300"></canvas>
 </body>
 <script>
-
-    function drawChart() {
-        xInterval = 10;
-        yInterval = 10;
-        // 获取折线的数据
-        let rawData = JSON.parse(document.getElementById('ttJsonStr').value);
-        data =[];
-        for (let item of rawData) {
-            data.push({ x:item.x, y:item.y, value:item.value })
-        }
-
+    function drawChart(){
         /**
-         * 开始绘制折线图
-         * @type {Element}
+         * canvasId: 画布id
+         * axisPadding: 画布距坐标轴的页边距
+         * interval: 刻度间距
+         * lineColor: 折线颜色
+         * lineData: 折线数据
          */
-        let canvas = document.getElementById('myCanvas');
-
-        // 1. 创建画布对象
-        let context = canvas.getContext("2d");
-        // 2. 获取画布的宽度和高度
-        const WIDTH = canvas.width; // 500px
-        const HEIGHT = canvas.height; // 300px
-        // 3. 定义坐标轴相对画布的内边距
-        var padding = 20;//初始化内边距
-        var paddingLeft = 60;//至少大于绘制文字的宽度
-        var paddingBottom = 30;//至少大于绘制文字的高度
-
-        // 4. 定义绘制坐标轴的关键点的坐标值
-        var axisYStart = {// y轴的起点坐标值
-            x: paddingLeft, // 60
-            y: padding // 30
+        let canvasId = "myCanvas";
+        let axisPadding = {
+            padding : 20, //初始化内边距
+            paddingLeft : 60, //至少大于绘制文字的宽度
+            paddingBottom : 30 //至少大于绘制文字的高度
         };
-        var origin = {// 原点坐标值(x轴与y轴相交点)
-            x: paddingLeft, // 60
-            y: HEIGHT - paddingBottom // 270
-        };
-        var axisXStart = {// x轴的起点坐标值
-            x: WIDTH - padding, // 480
-            y: HEIGHT - paddingBottom // 270
-        };
-        // 5. 绘制坐标轴
-        context.beginPath();
-        context.moveTo(axisYStart.x, axisYStart.y);
-        context.lineTo(origin.x, origin.y);
-        context.lineTo(axisXStart.x, axisXStart.y);
-        context.stroke();
-        // 6. 绘制坐标轴的箭头
-        // 绘制Y轴箭头
-        context.beginPath();
-        context.moveTo(axisYStart.x - 5, axisYStart.y + 10);
-        context.lineTo(axisYStart.x, axisYStart.y);
-        context.lineTo(axisYStart.x + 5, axisYStart.y + 10);
-        context.stroke();
-
-        // 绘制X轴箭头
-        context.beginPath();
-        context.moveTo(axisXStart.x - 10, axisXStart.y - 5);
-        context.lineTo(axisXStart.x, axisXStart.y);
-        context.lineTo(axisXStart.x - 10, axisXStart.y + 5);
-        context.stroke();
-
-        // 定义折点的x轴值
-        var pointsX = [];
-
-        // 7. 绘制坐标轴的刻度(x轴的月份和y轴的金额)
-        // x轴刻度
-        var month = {
-            x: paddingLeft,
-            y: HEIGHT - paddingBottom
+        // 设置刻度增长数值
+        let interval = {
+            xInterval : 10,
+            yInterval : 10
         }
-        //计算x轴刻度
-        data.sort(function (a, b) { return a.x - b.x });
-        let xIntervalCount = Math.ceil(data[data.length - 1].x / xInterval); // 刻度数
-        let xIntervalLen = (axisXStart.x - origin.x) / xIntervalCount; // 刻度间隔
-        // 设置字体
-        context.font = "14px 微软雅黑";
-        // 设置垂直对齐
-        context.textBaseline = "top";
-        //标注x坐标刻度
-        let xStart = origin.x + xIntervalLen;
-        let interval = this.xInterval;
-        for (let i = 1; i <= xIntervalCount; i++) {
-            context.fillText(interval, xStart, origin.y);
-            // 改变每次绘制的x坐标轴的值
-            xStart += xIntervalLen;
-            interval += this.xInterval;
-        }
-
-        //计算y轴刻度
-        this.data.sort(function (a, b) { return a.y - b.y });
-        let yIntervalCount = Math.ceil(this.data[this.data.length - 1].y / this.yInterval);
-        let yIntervalLen = (axisXStart.y - axisYStart.y) / yIntervalCount;
-        // 设置垂直对齐
-        context.textAlign = "right";
-        //标注y坐标刻度
-        let yStart = origin.y - xIntervalLen;
-        interval = this.yInterval;
-        for (let i = 1; i <= yIntervalCount; i++) {
-            context.fillText(interval, origin.x, yStart);
-            // 改变每次绘制的x坐标轴的值
-            yStart -= yIntervalLen;
-            interval += yInterval;
-        }
-        context.fillText("0,0", origin.x, origin.y);
-        context.stroke();
-
-        //8.绘制折线
-        this.data.sort(function (a, b) { return a.x - b.x });
-        context.textAlign ="left";
-        context.textBaseline = "bottom";
-        context.strokeStyle = "green";
-        for(let i=0;i<this.data.length;i++){
-
-            let pointX=origin.x+this.data[i].x/this.xInterval*xIntervalLen;
-            let pointY=origin.y-this.data[i].y/this.yInterval*yIntervalLen;
-            if(i==0) {
-                context.moveTo(pointX,pointY);
-            }
-            else{
-                context.lineTo(pointX,pointY);
-            }
-            context.fillText(this.data[i].value, pointX, pointY);
-        }
-        context.stroke();
+        let lineColor = "green";
+        let lineData = [
+            [
+                {
+                    "x": "12",
+                    "y": "13",
+                    "value": "315"
+                },
+                {
+                    "x": "31",
+                    "y": "41",
+                    "value": "6498"
+                },
+                {
+                    "x": "78",
+                    "y": "13",
+                    "value": "156"
+                },
+                {
+                    "x": "23",
+                    "y": "30",
+                    "value": "123"
+                },
+                {
+                    "x": "1",
+                    "y": "34",
+                    "value": "331"
+                },
+                {
+                    "x": "50",
+                    "y": "3",
+                    "value": "123"
+                },
+                {
+                    "x": "13",
+                    "y": "20",
+                    "value": "85678"
+                }
+            ],
+            [
+                {
+                    "x": "13",
+                    "y": "14",
+                    "value": "315"
+                },
+                {
+                    "x": "32",
+                    "y": "42",
+                    "value": "6498"
+                },
+                {
+                    "x": "79",
+                    "y": "14",
+                    "value": "156"
+                },
+                {
+                    "x": "24",
+                    "y": "35",
+                    "value": "123"
+                },
+                {
+                    "x": "4",
+                    "y": "36",
+                    "value": "400"
+                },
+                {
+                    "x": "54",
+                    "y": "3",
+                    "value": "123"
+                },
+                {
+                    "x": "15",
+                    "y": "28",
+                    "value": "85678"
+                }
+            ]
+        ];
+        createLineChat ( canvasId , axisPadding , interval , lineColor , lineData )
     }
-
 </script>
 </html>
