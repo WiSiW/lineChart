@@ -25,15 +25,17 @@
         let canvasId = "myCanvas";
         let axisPadding = {
             padding : 20, //初始化内边距
-            paddingLeft : 60, //至少大于绘制文字的宽度
-            paddingBottom : 30 //至少大于绘制文字的高度
+            paddingLeft : 60, // 坐标轴左边距，y轴刻度标示处，应至少大于刻度文字的宽度
+            paddingBottom : 30 // 坐标轴下方，x轴刻度标示处，应至少大于刻度文字的高度
         };
-        // 设置刻度增长数值
+        // 设置刻度增长数值，即每个刻度的间隔值
         let interval = {
             xInterval : 10,
             yInterval : 10
         }
+        // 折线的颜色
         let lineColor = "green";
+        // 折线的数据
         let lineData = [
             [
                 {
